@@ -3,9 +3,13 @@ import { createStore } from 'vuex'
 export default createStore({
   state () {
     return {
+      // localstorage 사용을 하지 않으므로 현재 로그인 한 정보를 now_user 에 저장
       now_user: {},
+      // 회원가입 한 유저 목록 저장
       user: { s: { email_id: 's', nickname: 'hello', pwd: 's' } },
+      // 문제 list 에서 문제 보기 클릭 시 save_data 에서 해당 문제집 정보를 가져와 담는다
       load_data: '',
+      // 저장된 문제집 데이터
       save_data: [{
         problem_name: '리본 수학 (test-1)',
         complete_time: '2021-5-04',
@@ -1600,8 +1604,9 @@ export default createStore({
         ]
       }
       ],
+      // 성적표 보기 화면에 랜더링 할 해당 데이터 저장 공간
       result: {
-        problem_name: 'nsssssss',
+        problem_name: '기본 수학 1-1 가나다라마바사아자차카타',
         select_result: {
           0: [1, 'correct'],
           1: [3, 'wrong'],
@@ -1668,22 +1673,29 @@ export default createStore({
   getters: {
   },
   mutations: {
+    // 회원가입 시 user state 정보 저장 함수
     regist_user (state, data) {
       state.user[data.email_id] = data
     },
+    // 문제 만들기 화면에서 제작 완료 시 save_data state 에 저장과 동시에
+    // 완료된 문제집을 바로 랜더링 할 수 있게 load_data state 에 저장
     save_data (state, data) {
       state.load_data = data
       state.save_data.unshift(data)
     },
+    // 문제집 리스트 화면에서 클릭 시 load_data state 에 해당 문제집 정보 저장
     loading_data (state, data) {
       state.load_data = data
     },
+    // 로그인 시 현재 로그인 한 아이디의 정보를 user state 에서 now_user state 에 저장
     now_user (state, data) {
       state.now_user = data
     },
+    // 로그아웃 버튼 클릭 시 now_user state 를 비워줌
     log_out (state) {
       state.now_user = {}
     },
+    // 문제집 리스트 화면에서 시간순, 제작자 이름 순, 문제집 이름 순 정렬 시 처리할 함수
     select_option (state, data) {
       if (data === 'complete_time') {
         state.save_data.sort((a, b) => b.complete_time.localeCompare(a.complete_time))
@@ -1691,12 +1703,14 @@ export default createStore({
         state.save_data.sort((a, b) => a[data].localeCompare(b[data]))
       }
     },
+    // localstorage 를 사용하지 않기 때문에, 페이지 새로고침 시 로그인 화면으로 안내 알람창 + 로그인 화면으로 이동
     check_data () {
       if (this.$store.state.now_user === {}) {
         alert('로그인 후 이용해 주세요')
         this.$router.push({ path: '/' })
       }
     },
+    // 문제 풀기 완료 후 성적표 보기 창으로 이동 시 해당 데이터를 담을 함수
     save_result (state, data) {
       state.result = data
       console.log(state.result)

@@ -19,8 +19,6 @@ export default {
   },
   mounted () {
     this.$refs.header_control.usermakeControl()
-    this.$refs.header_control.topLogoControl()
-    // this.$refs.header_control.mentControl()
   }
 }
 </script>

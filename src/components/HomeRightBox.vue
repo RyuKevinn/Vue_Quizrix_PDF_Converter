@@ -1,5 +1,4 @@
 <template>
-<!-- 로그인 전 화면 -->
     <div class="right_section" v-show="!log_in">
         <h1>MEMBER</h1>
         <span class="color_gray">이메일과 입력만으로 1초만에 회원가입</span>
@@ -15,18 +14,6 @@
           <router-link to="/join" class="join">회원가입 <img src="@/assets/img/ev.png" alt=""></router-link>
         </div>
     </div>
-<!-- 로그인 후 화면 -->
-    <!-- <div class="right_section log_in" v-show="log_in">
-      <img src="@/assets/logo01.png" alt="" class="welcome_img">
-      <div class="welcome">
-      <h2>{{login_user}} 님 <br>환영합니다!</h2>
-      </div>
-      <p>지금 바로 퀴즈릭스 문제 만들러 가요!</p>
-      <div class="btn">
-        <router-link to="/making" class="go_making">문제 만들기</router-link>
-        <button class="log_out" @click="log_out">로그아웃</button>
-      </div>
-    </div> -->
 </template>
 <script>
 export default {
@@ -59,7 +46,6 @@ export default {
         this.$router.push({ path: '/' })
         this.$store.commit('now_user', storeId)
         this.login_user = this.$store.state.now_user.nickname
-        // console.log(this.remember_id)
         this.$router.push({ path: '/making' })
       }
     }

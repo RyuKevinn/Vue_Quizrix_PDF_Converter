@@ -44,7 +44,6 @@ export default {
   },
   mounted () {
     this.$refs.header_control.makeControl()
-    this.$refs.header_control.topLogoControl()
   },
   computed: {
     problem_data () {

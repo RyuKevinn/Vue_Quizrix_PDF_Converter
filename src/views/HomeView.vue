@@ -12,14 +12,6 @@ export default {
     HomeLeftBox,
     HomeRightBox
   }
-  // data () {
-  //   return {
-  //     topLogo: false
-  //   }
-  // },
-  // mounted () {
-  //   this.$emit('topLogoOK', this.topLogo)
-  // }
 }
 </script>
 <style>

@@ -1,5 +1,6 @@
 <template>
-<button class="pdf_download" @click="exportToPDF">PDF</button>
+<UserHeader ref="header_control"/>
+<button class="pdf_download" @click="exportToPDF">PDF download</button>
   <div class="result_section" ref="pdfarea">
     <div class="result_section_header">
        <!-- <h1>Score</h1> -->
@@ -28,10 +29,10 @@
           <th>정답 여부</th>
         </thead>
         <tbody>
-          <tr v-for="(i,index) in data.select_result" :key="i" v-bind:class="{'html2pdf__page-break' : (parseInt(index)+1) % 53 === 0 ? true : false}">
+          <tr v-for="(i,index) in data.select_result" :key="i">
             <td>{{parseInt(index)+1}}</td>
             <td>{{i[0]}}</td>
-            <td>{{i[1]}}</td>
+            <td v-bind:class="{'correct':i[1]=== 'correct', 'wrong' : i[1]==='wrong'}">{{i[1] === 'correct' ? '정답' : '오답'}}</td>
           </tr>
         </tbody>
       </table>
@@ -40,6 +41,7 @@
 </template>
 <script>
 import html2pdf from 'html2pdf.js'
+import UserHeader from '@/components/UserHeader.vue'
 
 export default {
   data () {
@@ -48,12 +50,11 @@ export default {
       nickname: this.$store.state.now_user.nickname
     }
   },
+  components: {
+    UserHeader
+  },
   methods: {
-    sss () {
-      console.log(this.data)
-    },
     exportToPDF () {
-      // window.scrollTo(0, 0);
       html2pdf(this.$refs.pdfarea, {
         margin: [30, 0, 30, 0],
         filename: 'document.pdf',
@@ -68,37 +69,49 @@ export default {
           allowTaint: false
           // useCORS를 true로 설정 시 반드시 allowTaint를 false처리 해주어야함
         },
-        pagebreak: { mode: ['avoid-all', 'css', 'legacy'], before: '.first' },
+        pagebreak: { mode: 'avoid-all', before: '.first' },
         jsPDF: { orientation: 'portrait', unit: 'mm', format: 'a4', compressPDF: true }
       })
     }
+  },
+  mounted () {
+    this.$refs.header_control.makeControl()
+    this.$refs.header_control.usermakeControl()
   }
 }
 </script>
 <style scoped>
 .pdf_download {
   padding: 5px 10px;
+  border: 1px solid black;
+  margin : 10px 0 0 120px;
+  background:none;
+  transition:all 0.3s
+}
+.pdf_download:hover {
+  background:#ddd
 }
   .result_section {
     max-width: 600px;
     margin: 0 auto;
     text-align: center;
-    padding: 30px 0;
+    padding: 30px 0 50px;;
   }
   .result_section .result_section_header {
-    /* background:#ddd; */
-    /* color:white; */
     border-top: 3px solid black;
     border-left: 3px solid black;
     border-right: 3px solid black;
     border-top-left-radius: 10px;;
     border-top-right-radius: 10px;;
     padding: 20px 0 10px;
-    width: 300px;
+    min-width: 300px;
+    max-width: 500px;
     margin: 0 auto;
   }
   .result_section .result_section_header .problem_name {
     font-size: 25px;
+    padding: 0 10px;
+    word-break:keep-all;
   }
   .result_section .result_section_header .ment {
     margin-top: 30px;
@@ -130,9 +143,6 @@ export default {
      justify-content: space-between;
      padding: 40px 0;
    }
-  .result_section .result_section_body .score_data p {
-    /* border: 1px solid red; */
-  }
   .result_section .result_section_body .score_data p span {
     display:inline-block;
     width: 90px;
@@ -143,6 +153,8 @@ export default {
     padding: 0px 30px;
     border-left: 3px solid black;
     border-right:3px solid black;
+    border-bottom:3px solid black;
+    border-radius: 10px;
   }
   .result_section .result_section_footer table{
     /* border-left: 1px solid black; */
@@ -167,4 +179,13 @@ export default {
     border-top: 1px solid lightgray;
     padding: 5px 0;
   }
+  .result_section .result_section_footer table tr:last-child td{
+    padding-bottom: 20px;
+  }
+  .result_section .result_section_footer table .correct{
+    color:#0091ff;
+}
+.result_section .result_section_footer table .wrong{
+  color:red;
+}
 </style>

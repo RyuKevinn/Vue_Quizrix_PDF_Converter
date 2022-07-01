@@ -14,9 +14,7 @@ export default {
   data () {
     return {
       make: false,
-      usermake: false,
-      topLogo: false
-      // ment: false
+      usermake: false
     }
   },
   methods: {
@@ -28,13 +26,6 @@ export default {
     usermakeControl () {
       this.usermake = !this.usermake
     },
-    // 로그인 후 이동되는 화면들에 좌측 상단 로고 컨트롤
-    topLogoControl () {
-      this.topLogo = !this.topLogo
-    },
-    // mentControl () {
-    //   this.ment = !this.ment
-    // },
     // 문제집 목록으로 이동 시 최초 랜더링에 저장된 목록들을 완성된 날 기준으로 정렬
     select_option (data) {
       this.$store.commit('select_option', data)
